@@ -29,7 +29,11 @@ public class PlayerMovement : MonoBehaviour
 		change = Vector3.zero;
 		change.x = Input.GetAxisRaw("Horizontal");
 		change.y = Input.GetAxisRaw("Vertical");
-		UpdateAnimationAndMove();
+		
+		if (currentState == PlayerState.walk) 
+		{
+			UpdateAnimationAndMove();
+		}
 	}
 
 	private void Update()
@@ -37,8 +41,10 @@ public class PlayerMovement : MonoBehaviour
 		if (Input.GetButtonDown("attack") && currentState != PlayerState.attack)
 		{
 			StartCoroutine(AttackCo());
+			Debug.Log("press space");
 		}
 	}
+
 	public void MoveCharacter()
 	{
 		change.Normalize();
@@ -62,8 +68,8 @@ public class PlayerMovement : MonoBehaviour
 	IEnumerator AttackCo()
 	{
 		Debug.Log("coroutine started");
-		animator.SetBool("attacking", true);
 		currentState = PlayerState.attack;
+		animator.SetBool("attacking", true);
 		yield return null;
 		animator.SetBool("attacking", false);
 		yield return new WaitForSeconds(animationWaitTime);
