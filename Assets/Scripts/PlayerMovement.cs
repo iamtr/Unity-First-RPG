@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
 		if (Input.GetButtonDown("attack") && currentState != PlayerState.attack)
 		{
 			StartCoroutine(AttackCo());
-			Debug.Log("press space");
+			//Debug.Log("press space");
 		}
 	}
 
@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
 
 	IEnumerator AttackCo()
 	{
-		Debug.Log("coroutine started");
+		//Debug.Log("coroutine started");
 		currentState = PlayerState.attack;
 		animator.SetBool("attacking", true);
 		yield return null;
