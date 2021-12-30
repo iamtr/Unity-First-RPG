@@ -23,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
 		myRigidBody = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
 		currentState = PlayerState.walk;
+		animator.SetFloat("moveX", 0);
+		animator.SetFloat("moveY", -1);
 	}
 	private void FixedUpdate()
 	{
