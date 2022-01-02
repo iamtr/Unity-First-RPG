@@ -9,7 +9,8 @@ public class PlayerMovement : MonoBehaviour
 		idle,
 		walk,
 		attack, 
-		interact
+		interact,
+		stagger
 	}
 
 	public int speed;
@@ -18,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
 	private Rigidbody2D myRigidBody;
 	public PlayerState currentState;
 	public float animationWaitTime;
+
 	private void Start()
 	{
 		myRigidBody = GetComponent<Rigidbody2D>();
@@ -32,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
 		change.x = Input.GetAxisRaw("Horizontal");
 		change.y = Input.GetAxisRaw("Vertical");
 		
-		if (currentState == PlayerState.walk) 
+		if (currentState == PlayerState.walk || currentState == PlayerState.idle) 
 		{
 			UpdateAnimationAndMove();
 		}
@@ -40,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetButtonDown("attack") && currentState != PlayerState.attack)
+		if (Input.GetButtonDown("attack") && currentState != PlayerState.attack && currentState != PlayerState.stagger)
 		{
 			StartCoroutine(AttackCo());
 			//Debug.Log("press space");
@@ -76,5 +78,20 @@ public class PlayerMovement : MonoBehaviour
 		animator.SetBool("attacking", false);
 		yield return new WaitForSeconds(animationWaitTime);
 		currentState = PlayerState.walk;
+	}
+
+	public void Knock(Rigidbody2D myRigidbody, float knockTime)
+	{
+		StartCoroutine(KnockCo(myRigidbody, knockTime));
+	}
+
+	public IEnumerator KnockCo(Rigidbody2D myRigidbody, float knockTime)
+	{
+		if (myRigidbody != null)
+		{
+			yield return new WaitForSeconds(knockTime);
+			myRigidbody.velocity = Vector3.zero;
+			myRigidbody.GetComponent<PlayerMovement>().currentState = PlayerState.idle;
+		}
 	}
 }
