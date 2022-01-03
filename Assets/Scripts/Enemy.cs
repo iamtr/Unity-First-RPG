@@ -13,14 +13,20 @@ public class Enemy : MonoBehaviour
 	}
 
 	public EnemyState currentState;
-	public int health;
+	public float health;
+	public FloatValue maxHealth;
 	public int moveSpeed;
 	public int baseAttack;
 	public string enemyName;
 
-	public void Knock(Rigidbody2D myRigidbody, float knockTime)
+	private void Awake()
+	{
+		health = maxHealth.initialValue;
+	}
+	public void Knock(Rigidbody2D myRigidbody, float knockTime, float damage)
 	{
 		StartCoroutine(KnockCo(myRigidbody, knockTime));
+		TakeDamage(damage);
 	}
 
 	public IEnumerator KnockCo(Rigidbody2D myRigidbody, float knockTime)
@@ -30,6 +36,15 @@ public class Enemy : MonoBehaviour
 			yield return new WaitForSeconds(knockTime);
 			myRigidbody.velocity = Vector3.zero;
 			myRigidbody.GetComponent<Enemy>().currentState = Enemy.EnemyState.idle;
+		}
+	}
+
+	private void TakeDamage(float damage)
+	{
+		health -= damage;
+		if (health <= 0)
+		{
+			gameObject.SetActive(false);
 		}
 	}
 }
