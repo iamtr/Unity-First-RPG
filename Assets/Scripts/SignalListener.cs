@@ -5,18 +5,18 @@ using UnityEngine.Events;
 
 public class SignalListener : MonoBehaviour
 {
-	private Signal signal;
+	public Signal signal;
 	public UnityEvent signalEvent;
 	public void OnSignalRaised()
 	{
 		signalEvent.Invoke();
 	}
-	private void OnEnable()
+	public void OnEnable()
 	{
 		signal.RegisterListener(this);
 	}
 
-	private void OnDisable()
+	public void OnDisable()
 	{
 		signal.DeregisterListener(this);
 	}
