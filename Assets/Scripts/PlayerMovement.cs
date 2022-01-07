@@ -85,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
 	public void Knock(Rigidbody2D myRigidbody, float knockTime, float damage)
 	{
 		currentHealth.runtimeValue -= damage;
-		//Debug.Log(currentHealth.runtimeValue);
+		Debug.Log("health:" + currentHealth.runtimeValue);
 		playerHealthSignal.Raise();
 		if(currentHealth.runtimeValue > 0)
 		{
